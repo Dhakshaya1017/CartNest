@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart — Brand Name</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container navbar-inner">
+        <a href="index.html" class="brand">
+          <span class="brand-mark"><i class="fa-solid fa-bolt"></i></span>
+          <span>Brand Name</span>
+        </a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="products.html">Shop</a>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="orders.html">Orders</a>
+        </div>
+        <div class="nav-actions">
+          <a class="btn btn-outline btn-sm" href="role-selection.html">Login</a>
+          <a class="btn btn-primary btn-sm" href="checkout.html"><i class="fa-solid fa-credit-card"></i> Checkout</a>
+          <button class="btn btn-ghost nav-toggle" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container cart-grid">
+      <section>
+        <div class="section-title reveal">
+          <h2>Your cart</h2>
+          <span class="badge">0 items</span>
+        </div>
+        <div class="cart-item reveal">
+          <div class="inline-row">
+            <div class="avatar"><i class="fa-solid fa-box"></i></div>
+            <div>
+              <strong>Product Name</strong>
+              <div class="meta">Category Placeholder</div>
+            </div>
+          </div>
+          <div class="qty-controls">
+            <button class="qty-btn">-</button>
+            <span>1</span>
+            <button class="qty-btn">+</button>
+          </div>
+          <strong>Price Placeholder</strong>
+        </div>
+      </section>
+      <aside class="summary-card reveal">
+        <h3>Order summary</h3>
+        <div class="price-line"><span>Subtotal</span><span>Price Placeholder</span></div>
+        <div class="price-line"><span>Shipping</span><span>Placeholder</span></div>
+        <div class="price-line"><span>Tax</span><span>Placeholder</span></div>
+        <div class="total"><span>Total</span><span>Price Placeholder</span></div>
+        <a href="checkout.html" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">Proceed to checkout</a>
+      </aside>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>

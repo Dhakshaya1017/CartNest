@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Customers — Brand Name Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container navbar-inner">
+        <a href="index.html" class="brand">
+          <span class="brand-mark"><i class="fa-solid fa-bolt"></i></span>
+          <span>Brand Name Admin</span>
+        </a>
+        <div class="nav-links">
+          <a href="index.html">Overview</a>
+          <a href="products.html">Products</a>
+          <a href="orders.html">Orders</a>
+          <a href="customers.html" class="active">Customers</a>
+        </div>
+        <div class="nav-actions">
+          <a class="btn btn-outline btn-sm" href="index.html">Dashboard</a>
+          <button class="btn btn-ghost nav-toggle" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container section">
+      <div class="section-title reveal">
+        <div>
+          <span class="badge"><i class="fa-solid fa-users"></i> Customer placeholder</span>
+          <h2>Customer directory</h2>
+        </div>
+      </div>
+      <div class="table-card reveal">
+        <table>
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Customer Name</td>
+              <td>customer@example.com</td>
+              <td><span class="badge success">Placeholder</span></td>
+              <td>Price Placeholder</td>
+            </tr>
+            <tr>
+              <td>Customer Name</td>
+              <td>customer@example.com</td>
+              <td><span class="badge">Placeholder</span></td>
+              <td>Price Placeholder</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>

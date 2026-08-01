@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard — Brand Name</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container navbar-inner">
+        <a href="index.html" class="brand">
+          <span class="brand-mark"><i class="fa-solid fa-bolt"></i></span>
+          <span>Brand Name Admin</span>
+        </a>
+        <div class="nav-links">
+          <a href="index.html" class="active">Overview</a>
+          <a href="products.html">Products</a>
+          <a href="orders.html">Orders</a>
+          <a href="customers.html">Customers</a>
+        </div>
+        <div class="nav-actions">
+          <a class="btn btn-outline btn-sm" href="../user/index.html">View store</a>
+          <button class="btn btn-ghost nav-toggle" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container dashboard-shell">
+      <aside class="sidebar-card reveal">
+        <div class="brand">
+          <span class="brand-mark"><i class="fa-solid fa-screwdriver-wrench"></i></span>
+          <span>Admin Panel</span>
+        </div>
+        <ul>
+          <li><a class="active" href="index.html"><span><i class="fa-solid fa-gauge"></i> Dashboard</span><i class="fa-solid fa-chevron-right"></i></a></li>
+          <li><a href="products.html"><span><i class="fa-solid fa-box-open"></i> Products</span><i class="fa-solid fa-chevron-right"></i></a></li>
+          <li><a href="orders.html"><span><i class="fa-solid fa-cart-shopping"></i> Orders</span><i class="fa-solid fa-chevron-right"></i></a></li>
+          <li><a href="customers.html"><span><i class="fa-solid fa-users"></i> Customers</span><i class="fa-solid fa-chevron-right"></i></a></li>
+        </ul>
+      </aside>
+      <section>
+        <div class="stats-grid">
+          <article class="stat-card reveal">
+            <div class="label">Revenue</div>
+            <div class="value">$0.00</div>
+          </article>
+          <article class="stat-card reveal">
+            <div class="label">Orders</div>
+            <div class="value">00</div>
+          </article>
+          <article class="stat-card reveal">
+            <div class="label">Customers</div>
+            <div class="value">00</div>
+          </article>
+          <article class="stat-card reveal">
+            <div class="label">Stock</div>
+            <div class="value">00</div>
+          </article>
+        </div>
+
+        <div class="table-card reveal" style="margin-top: 1.2rem;">
+          <div class="section-title" style="margin-bottom: 1rem;">
+            <h2>Recent orders</h2>
+            <a href="orders.html" class="btn btn-ghost">Manage</a>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Status</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#0000</td>
+                <td>Customer Name</td>
+                <td><span class="badge success">Placeholder</span></td>
+                <td>Price Placeholder</td>
+              </tr>
+              <tr>
+                <td>#0001</td>
+                <td>Customer Name</td>
+                <td><span class="badge">Placeholder</span></td>
+                <td>Price Placeholder</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout — Brand Name</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container navbar-inner">
+        <a href="index.html" class="brand">
+          <span class="brand-mark"><i class="fa-solid fa-bolt"></i></span>
+          <span>Brand Name</span>
+        </a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="products.html">Shop</a>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="orders.html">Orders</a>
+        </div>
+        <div class="nav-actions">
+          <a class="btn btn-outline btn-sm" href="cart.html">Back to cart</a>
+          <a class="btn btn-primary btn-sm" href="order-success.html"><i class="fa-solid fa-check"></i> Place order</a>
+          <button class="btn btn-ghost nav-toggle" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container cart-grid" style="padding-top: 2rem;">
+      <section class="form-card reveal">
+        <div class="section-title">
+          <h2>Shipping details</h2>
+          <span class="badge">Placeholder checkout</span>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Name</label>
+            <input type="text" placeholder="Full name" />
+          </div>
+          <div class="field">
+            <label>Address</label>
+            <input type="text" placeholder="Street address" />
+          </div>
+          <div class="field">
+            <label>City</label>
+            <input type="text" placeholder="City" />
+          </div>
+          <div class="field">
+            <label>Phone</label>
+            <input type="text" placeholder="Phone number" />
+          </div>
+        </div>
+      </section>
+      <aside class="summary-card reveal">
+        <h3>Payment method</h3>
+        <div class="payment-options">
+          <div class="payment-option active"><span><i class="fa-solid fa-money-bill-wave"></i> Payment placeholder</span><i class="fa-solid fa-check"></i></div>
+          <div class="payment-option"><span><i class="fa-solid fa-credit-card"></i> Payment placeholder</span><i class="fa-solid fa-arrow-right"></i></div>
+        </div>
+        <a href="order-success.html" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">Complete purchase</a>
+      </aside>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>

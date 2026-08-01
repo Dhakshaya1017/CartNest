@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register — Brand Name</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container navbar-inner">
+        <a href="index.html" class="brand">
+          <span class="brand-mark"><i class="fa-solid fa-bolt"></i></span>
+          <span>Brand Name</span>
+        </a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="products.html">Shop</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="nav-actions">
+          <a class="btn btn-outline btn-sm" href="role-selection.html">Already a member</a>
+          <a class="btn btn-primary btn-sm" href="cart.html"><i class="fa-solid fa-bag-shopping"></i> Cart</a>
+          <button class="btn btn-ghost nav-toggle" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="auth-shell">
+      <div class="auth-card reveal">
+        <span class="badge"><i class="fa-solid fa-user-plus"></i> Account placeholder</span>
+        <h1>Create an account</h1>
+        <p class="subtitle">This form is ready to be connected to your authentication flow.</p>
+        <form class="form-row">
+          <div class="field">
+            <label for="name">Name</label>
+            <input id="name" type="text" placeholder="Your full name" />
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="you@example.com" />
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input id="password" type="password" placeholder="Create a strong password" />
+          </div>
+          <button class="btn btn-primary" type="button" data-toast="Placeholder action">Create account</button>
+          <p style="text-align:center; color: var(--muted);">Already have an account? <a href="role-selection.html" style="color: var(--primary); font-weight:700;">Sign in</a></p>
+        </form>
+      </div>
+    </main>
+
+    <div class="toast-stack"></div>
+    <script src="../assets/js/main.js"></script>
+  </body>
+</html>

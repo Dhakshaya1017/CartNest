@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login — Brand Name</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container navbar-inner">
+        <a href="../user/index.html" class="brand">
+          <span class="brand-mark"><i class="fa-solid fa-bolt"></i></span>
+          <span>Brand Name Admin</span>
+        </a>
+        <div class="nav-actions">
+          <a class="btn btn-outline btn-sm" href="../user/role-selection.html">Back</a>
+          <button class="btn btn-ghost nav-toggle" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="auth-shell">
+      <div class="auth-card reveal">
+        <span class="badge"><i class="fa-solid fa-lock"></i> Admin access</span>
+        <h1>Admin sign in</h1>
+        <p class="subtitle">Use this page to enter the admin dashboard directly after sign in.</p>
+        <form id="adminLoginForm" class="form-row">
+          <div class="field">
+            <label for="admin-email">Email</label>
+            <input id="admin-email" type="email" placeholder="admin@example.com" />
+          </div>
+          <div class="field">
+            <label for="admin-password">Password</label>
+            <input id="admin-password" type="password" placeholder="Enter your password" />
+          </div>
+          <button class="btn btn-primary" type="submit">Continue</button>
+        </form>
+      </div>
+    </main>
+
+    <script src="../assets/js/main.js"></script>
+    <script>
+      const adminLoginForm = document.getElementById('adminLoginForm');
+      if (adminLoginForm) {
+        adminLoginForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+          window.location.href = 'index.html';
+        });
+      }
+    </script>
+  </body>
+</html>
