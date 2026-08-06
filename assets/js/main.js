@@ -1,73 +1,324 @@
-const toastStack = document.querySelector('.toast-stack');
+// ===============================
+// CartNest Common JavaScript
+// ===============================
 
-function showToast(message, type = 'info') {
-  if (!toastStack) return;
-  const toast = document.createElement('div');
-  toast.className = 'toast';
-  toast.innerHTML = `<strong>${type.toUpperCase()}</strong><div>${message}</div>`;
-  toastStack.appendChild(toast);
-  setTimeout(() => toast.remove(), 2500);
+// ---------- USER ----------
+
+function getUser() {
+
+    const user = localStorage.getItem("user");
+
+    if (user) {
+        try {
+            return JSON.parse(user);
+        } catch (e) {
+            return null;
+        }
+    }
+
+    return null;
+
 }
 
-function initReveal() {
-  const elements = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-      }
-    });
-  }, { threshold: 0.2 });
+function isLoggedIn() {
 
-  elements.forEach((el) => observer.observe(el));
+    return getUser() !== null;
+
 }
 
-function toggleWishlist(button) {
-  button.classList.toggle('active');
-  const label = button.classList.contains('active') ? 'Saved to wishlist' : 'Removed from wishlist';
-  showToast(label, 'success');
+function getUserName() {
+
+    const user = getUser();
+
+    if (user && user.name) {
+        return user.name;
+    }
+
+    return "Guest";
+
 }
 
-function toggleMenu() {
-  document.querySelector('.nav-links').classList.toggle('is-open');
+function logout() {
+
+    localStorage.removeItem("user");
+
+    window.location.href = "../user/login.html";
+
 }
 
-function initCountdown() {
-  const countdown = document.querySelector('[data-countdown]');
-  if (!countdown) return;
+// ---------- TOAST ----------
 
-  const deadline = new Date(Date.now() + 1000 * 60 * 60 * 24 * 2 + 1000 * 60 * 60 * 5 + 1000 * 60 * 20);
-  const update = () => {
-    const diff = deadline - new Date();
-    const days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
-    const hours = Math.max(0, Math.floor((diff / (1000 * 60 * 60)) % 24));
-    const mins = Math.max(0, Math.floor((diff / (1000 * 60)) % 60));
-    const secs = Math.max(0, Math.floor((diff / 1000) % 60));
+function showToast(message = "Success") {
 
-    document.querySelector('[data-days]').textContent = String(days).padStart(2, '0');
-    document.querySelector('[data-hours]').textContent = String(hours).padStart(2, '0');
-    document.querySelector('[data-mins]').textContent = String(mins).padStart(2, '0');
-    document.querySelector('[data-secs]').textContent = String(secs).padStart(2, '0');
-  };
+    let toast = document.getElementById("cartnest-toast");
 
-  update();
-  setInterval(update, 1000);
+    if (!toast) {
+
+        toast = document.createElement("div");
+
+        toast.id = "cartnest-toast";
+
+        toast.style.position = "fixed";
+        toast.style.bottom = "25px";
+        toast.style.right = "25px";
+        toast.style.background = "#111";
+        toast.style.color = "#fff";
+        toast.style.padding = "12px 20px";
+        toast.style.borderRadius = "10px";
+        toast.style.fontSize = "14px";
+        toast.style.zIndex = "999999";
+        toast.style.opacity = "0";
+        toast.style.transition = "0.35s";
+
+        document.body.appendChild(toast);
+
+    }
+
+    toast.innerText = message;
+
+    toast.style.opacity = "1";
+
+    setTimeout(() => {
+
+        toast.style.opacity = "0";
+
+    }, 2500);
+
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  initReveal();
-  initCountdown();
+// ---------- NAVBAR ----------
 
-  document.querySelectorAll('.wishlist-btn').forEach((btn) => {
-    btn.addEventListener('click', () => toggleWishlist(btn));
-  });
+function updateNavbar() {
 
-  document.querySelectorAll('[data-toast]').forEach((btn) => {
-    btn.addEventListener('click', () => showToast(btn.dataset.toast, 'success'));
-  });
+    const user = getUser();
 
-  const navToggle = document.querySelector('.nav-toggle');
-  if (navToggle) {
-    navToggle.addEventListener('click', toggleMenu);
-  }
+    const userBox = document.getElementById("userName");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const loginBtn = document.getElementById("loginBtn");
+
+    if (user) {
+
+        if (userBox) {
+
+            userBox.innerHTML = `
+                <i class="fa-solid fa-user"></i>
+                ${user.name}
+            `;
+
+        }
+
+        if (logoutBtn) {
+
+            logoutBtn.style.display = "inline-flex";
+
+        }
+
+        if (loginBtn) {
+
+            loginBtn.style.display = "none";
+
+        }
+
+    } else {
+
+        if (userBox) {
+
+            userBox.innerHTML = "";
+
+        }
+
+        if (logoutBtn) {
+
+            logoutBtn.style.display = "none";
+
+        }
+
+        if (loginBtn) {
+
+            loginBtn.style.display = "inline-flex";
+
+        }
+
+    }
+
+}
+
+// ---------- CART COUNT ----------
+
+async function updateCartCount() {
+
+    const user = getUser();
+
+    if (!user) return;
+
+    try {
+
+        const response = await fetch(
+            `http://localhost:5000/api/cart/count/${user.id}`
+        );
+
+        const data = await response.json();
+
+        const badge = document.getElementById("cartCount");
+
+        if (badge) {
+
+            badge.innerText = data.count || 0;
+
+        }
+
+    } catch (error) {
+
+        console.log(error);
+
+    }
+
+}
+
+// ---------- WISHLIST COUNT ----------
+
+async function updateWishlistCount() {
+
+    const user = getUser();
+
+    if (!user) return;
+
+    try {
+
+        const response = await fetch(
+            `http://localhost:5000/api/wishlist/count/${user.id}`
+        );
+
+        const data = await response.json();
+
+        const badge = document.getElementById("wishlistCount");
+
+        if (badge) {
+
+            badge.innerText = data.count || 0;
+
+        }
+
+    } catch (error) {
+
+        console.log(error);
+
+    }
+
+}
+
+// ---------- CATEGORY REDIRECT ----------
+
+function openCategory(category) {
+
+    window.location.href =
+        `user/products.html?category=${encodeURIComponent(category)}`;
+
+}
+// ---------- SIDE MENU ----------
+
+function openMenu() {
+
+    const menu = document.getElementById("sideMenu");
+    const overlay = document.getElementById("menuOverlay");
+
+    if (menu && overlay) {
+
+        menu.classList.add("active");
+        overlay.classList.add("active");
+
+    }
+
+}
+
+function closeMenu() {
+
+    const menu = document.getElementById("sideMenu");
+    const overlay = document.getElementById("menuOverlay");
+
+    if (menu && overlay) {
+
+        menu.classList.remove("active");
+        overlay.classList.remove("active");
+
+    }
+
+}
+
+// ---------- MENU USER ----------
+
+function loadMenuUser() {
+
+    const user = getUser();
+
+    const menuUser = document.getElementById("menuUser");
+
+    if (!menuUser) return;
+
+    if (user) {
+
+        menuUser.innerHTML = `
+
+        <i class="fa-solid fa-circle-user"></i>
+
+        <h3>${user.name}</h3>
+
+        <p>${user.email}</p>
+
+        `;
+
+    } else {
+
+        menuUser.innerHTML = `
+
+        <i class="fa-solid fa-user"></i>
+
+        <h3>Guest User</h3>
+
+        <p>Please Login</p>
+
+        `;
+
+    }
+
+}
+
+// ---------- CLOSE MENU ON OVERLAY ----------
+
+document.addEventListener("click", function (e) {
+
+    const overlay = document.getElementById("menuOverlay");
+
+    if (e.target === overlay) {
+
+        closeMenu();
+
+    }
+
+});
+
+// ---------- ESC KEY SUPPORT ----------
+
+document.addEventListener("keydown", function (e) {
+
+    if (e.key === "Escape") {
+
+        closeMenu();
+
+    }
+
+});
+
+// ---------- INITIALIZE ----------
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    updateNavbar();
+
+    loadMenuUser();
+
+    updateCartCount();
+
+    updateWishlistCount();
+
 });

@@ -1,66 +1,275 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login — Brand Name</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../assets/css/style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  </head>
-  <body>
-    <nav class="navbar">
-      <div class="container navbar-inner">
-        <a href="index.html" class="brand">
-          <span class="brand-mark"><i class="fa-solid fa-bolt"></i></span>
-          <span>Brand Name</span>
-        </a>
-        <div class="nav-links">
-          <a href="index.html">Home</a>
-          <a href="products.html">Shop</a>
-          <a href="about.html">About</a>
-          <a href="contact.html">Contact</a>
-        </div>
-        <div class="nav-actions">
-          <a class="btn btn-outline btn-sm" href="register.html">Create account</a>
-          <a class="btn btn-primary btn-sm" href="cart.html"><i class="fa-solid fa-bag-shopping"></i> Cart</a>
-          <button class="btn btn-ghost nav-toggle" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
-        </div>
-      </div>
-    </nav>
 
-    <main class="auth-shell">
-      <div class="auth-card reveal">
-        <span class="badge"><i class="fa-solid fa-lock"></i> User access</span>
-        <h1>Sign in</h1>
-        <p class="subtitle">This screen sends you to your dashboard after sign in.</p>
-        <form id="userLoginForm" class="form-row">
-          <div class="field">
-            <label for="email">Email</label>
-            <input id="email" type="email" placeholder="you@example.com" />
-          </div>
-          <div class="field">
-            <label for="password">Password</label>
-            <input id="password" type="password" placeholder="Enter your password" />
-          </div>
-          <button class="btn btn-primary" type="submit">Continue</button>
-          <p style="text-align:center; color: var(--muted);">Need an account? <a href="register.html" style="color: var(--primary); font-weight:700;">Create one</a></p>
-        </form>
-      </div>
-    </main>
+<head>
 
-    <div class="toast-stack"></div>
-    <script src="../assets/js/main.js"></script>
-    <script>
-      const userLoginForm = document.getElementById('userLoginForm');
-      if (userLoginForm) {
-        userLoginForm.addEventListener('submit', (event) => {
-          event.preventDefault();
-          window.location.href = 'dashboard.html';
-        });
-      }
-    </script>
-  </body>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CartNest | Login</title>
+
+<link rel="stylesheet" href="../assets/css/style.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+<nav class="navbar">
+
+<div class="container navbar-inner">
+
+
+<a href="../index.html" class="brand">
+
+<i class="fa-solid fa-cart-shopping"></i>
+
+CartNest
+
+</a>
+
+
+</div>
+
+</nav>
+
+
+
+
+
+<section class="container section">
+
+
+<div class="form-box">
+
+
+<h2>
+
+Welcome Back 👋
+
+</h2>
+
+
+<p>
+
+Login to continue shopping
+
+</p>
+
+
+
+
+
+<form id="loginForm">
+
+
+<input
+
+type="email"
+
+id="email"
+
+placeholder="Email Address"
+
+required>
+
+
+
+
+
+<input
+
+type="password"
+
+id="password"
+
+placeholder="Password"
+
+required>
+
+
+
+
+
+
+<p
+
+id="loginMessage"
+
+style="
+
+color:red;
+
+margin:10px 0;
+
+">
+
+</p>
+
+
+
+
+
+<button
+
+class="btn btn-primary"
+
+id="loginBtn"
+
+type="submit">
+
+
+Login
+
+
+</button>
+
+
+
+
+</form>
+
+
+
+
+
+
+<p style="margin-top:15px;">
+
+
+Don't have an account?
+
+
+<a href="register.html">
+
+Register
+
+</a>
+
+
+</p>
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+<script src="../assets/js/auth.js"></script>
+
+<script src="../assets/js/main.js"></script>
+
+
+
+<script>
+
+
+// Already logged in
+
+if(isLoggedIn()){
+
+
+window.location.href="products.html";
+
+
+}
+
+
+
+
+
+const loginForm=document.getElementById("loginForm");
+
+const loginBtn=document.getElementById("loginBtn");
+
+const loginMessage=document.getElementById("loginMessage");
+
+
+
+
+
+loginForm.addEventListener(
+
+"submit",
+
+async(e)=>{
+
+
+e.preventDefault();
+
+
+
+loginBtn.innerText="Logging in...";
+
+loginBtn.disabled=true;
+
+
+
+const email=document.getElementById("email").value;
+
+
+const password=document.getElementById("password").value;
+
+
+
+
+
+const data=await loginUser(
+
+email,
+
+password
+
+);
+
+
+
+
+
+if(data.success){
+
+
+window.location.href="products.html";
+
+
+}
+
+else{
+
+
+loginMessage.innerText=data.message || "Invalid Login";
+
+
+loginBtn.innerText="Login";
+
+loginBtn.disabled=false;
+
+
+}
+
+
+
+}
+
+);
+
+
+</script>
+
+
+
+</body>
+
 </html>

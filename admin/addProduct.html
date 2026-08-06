@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CartNest | Add Product</title>
+
+<link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<div class="container navbar-inner">
+
+<a href="dashboard.html" class="brand">
+CartNest Admin
+</a>
+
+<div class="nav-links">
+
+<a href="dashboard.html">Dashboard</a>
+<a href="products.html">Products</a>
+
+</div>
+
+</div>
+
+</nav>
+
+<section class="container section">
+
+<div class="section-title">
+
+<h2>Add New Product</h2>
+
+<p>Add a new product to your CartNest store.</p>
+
+</div>
+
+<form id="productForm" class="form-box">
+
+<div class="form-group">
+
+<label>Product Name</label>
+
+<input
+type="text"
+id="name"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>Description</label>
+
+<textarea
+id="description"
+rows="4"
+required></textarea>
+
+</div>
+
+<div class="form-group">
+
+<label>Price (₹)</label>
+
+<input
+type="number"
+id="price"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>Category</label>
+
+<input
+type="text"
+id="category"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>Image Name</label>
+
+<input
+type="text"
+id="image"
+placeholder="example.jpg">
+
+</div>
+
+<div class="form-group">
+
+<label>Stock</label>
+
+<input
+type="number"
+id="stock"
+required>
+
+</div>
+
+<button
+class="btn btn-primary"
+style="width:100%;"
+type="submit">
+
+Add Product
+
+</button>
+
+</form>
+
+</section>
+
+<script>
+
+const form=document.getElementById("productForm");
+
+form.addEventListener("submit",async(e)=>{
+
+e.preventDefault();
+
+const product={
+
+name:document.getElementById("name").value,
+
+description:document.getElementById("description").value,
+
+price:Number(document.getElementById("price").value),
+
+category:document.getElementById("category").value,
+
+image:document.getElementById("image").value,
+
+stock:Number(document.getElementById("stock").value)
+
+};
+
+try{
+
+const response=await fetch(
+
+"http://localhost:5000/api/products/add",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify(product)
+
+}
+
+);
+
+const data=await response.json();
+
+alert(data.message);
+
+if(data.success){
+
+form.reset();
+
+}
+
+}
+
+catch(error){
+
+console.log(error);
+
+alert("Unable to add product");
+
+}
+
+});
+
+</script>
+
+</body>
+
+</html>

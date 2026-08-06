@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CartNest | Admin Users</title>
+
+<link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+
+
+<body>
+
+
+<nav class="navbar">
+
+<div class="container navbar-inner">
+
+
+<a href="dashboard.html" class="brand">
+
+CartNest Admin
+
+</a>
+
+
+<div class="nav-links">
+
+<a href="dashboard.html">Dashboard</a>
+
+<a href="products.html">Products</a>
+
+<a href="orders.html">Orders</a>
+
+</div>
+
+
+</div>
+
+</nav>
+
+
+
+
+
+<section class="container section">
+
+
+<div class="section-title">
+
+<h2>Registered Users</h2>
+
+<p>View all customers registered on CartNest.</p>
+
+</div>
+
+
+
+<div id="usersContainer">
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+<script>
+
+
+const usersContainer=document.getElementById("usersContainer");
+
+
+
+async function loadUsers(){
+
+
+try{
+
+
+const response=await fetch(
+
+"http://localhost:5000/api/admin/users"
+
+);
+
+
+
+const data=await response.json();
+
+
+
+if(!data.success || data.users.length===0){
+
+
+usersContainer.innerHTML=
+
+"<h3>No Users Found</h3>";
+
+return;
+
+
+}
+
+
+
+usersContainer.innerHTML="";
+
+
+
+data.users.forEach(user=>{
+
+
+usersContainer.innerHTML+=`
+
+
+<div class="product-card">
+
+
+<h3>
+
+${user.name}
+
+</h3>
+
+
+
+<p>
+
+Email: ${user.email}
+
+</p>
+
+
+
+<p>
+
+Phone: ${user.phone || "Not Available"}
+
+</p>
+
+
+
+<p>
+
+Address: ${user.address || "Not Available"}
+
+</p>
+
+
+
+<p>
+
+Joined: ${new Date(user.created_at).toLocaleDateString()}
+
+</p>
+
+
+
+</div>
+
+
+`;
+
+
+});
+
+
+
+}
+
+
+catch(error){
+
+
+console.log(error);
+
+
+usersContainer.innerHTML=
+
+"Unable to load users";
+
+
+}
+
+
+
+}
+
+
+
+loadUsers();
+
+
+
+</script>
+
+
+</body>
+
+</html>

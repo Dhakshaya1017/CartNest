@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CartNest | Wishlist</title>
+
+<link rel="stylesheet" href="../assets/css/style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+<div id="navbar"></div>
+
+
+
+
+<section class="container section">
+
+
+<div class="section-title">
+
+<h2>
+My Wishlist ❤️
+</h2>
+
+<p>
+Saved products for later
+</p>
+
+</div>
+
+
+
+<div id="wishlistGrid" class="product-grid"></div>
+
+
+</section>
+
+
+
+
+<script src="../assets/js/main.js"></script>
+
+<script src="../assets/js/wishlist.js"></script>
+
+<script src="../assets/js/navbar.js"></script>
+
+
+
+<script>
+
+
+const wishlistUser = JSON.parse(localStorage.getItem("user"));
+
+
+
+if(!wishlistUser){
+
+window.location.href="login.html";
+
+}
+
+
+
+const grid = document.getElementById("wishlistGrid");
+
+
+
+async function loadWishlist(){
+
+
+try{
+
+
+const response = await fetch(
+
+`http://localhost:5000/api/wishlist/${wishlistUser.id}`
+
+);
+
+
+
+const data = await response.json();
+
+
+
+grid.innerHTML="";
+
+
+
+if(!data.success || !data.wishlist || data.wishlist.length===0){
+
+
+grid.innerHTML=`
+
+<div style="
+grid-column:1/-1;
+text-align:center;
+padding:60px;
+">
+
+<h2>
+Your Wishlist is Empty ❤️
+</h2>
+
+<p>
+Browse products and add your favourites.
+</p>
+
+
+<a href="products.html" class="btn btn-primary">
+Continue Shopping
+</a>
+
+
+</div>
+
+`;
+
+return;
+
+
+}
+
+
+
+
+data.wishlist.forEach(product=>{
+
+
+const productId = product.product_id || product.id;
+
+
+
+grid.innerHTML += `
+
+
+<div class="product-card fade">
+
+
+<div class="product-image">
+
+
+<img
+
+src="${product.image}"
+
+alt="${product.name}"
+
+onerror="this.src='https://via.placeholder.com/150'">
+
+
+</div>
+
+
+
+<div class="product-info">
+
+
+<h3>
+${product.name}
+</h3>
+
+
+
+<p>
+${product.description || "Premium quality product"}
+</p>
+
+
+
+<h3 class="price">
+
+₹${Number(product.price).toLocaleString("en-IN")}
+
+</h3>
+
+
+
+
+<div class="card-actions">
+
+
+<button
+
+class="btn btn-primary"
+
+onclick="addCart(${productId})">
+
+Add To Cart
+
+</button>
+
+
+
+
+<button
+
+class="btn btn-danger"
+
+onclick="removeItem(${product.wishlist_id})">
+
+Remove
+
+</button>
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+`;
+
+
+
+});
+
+
+}
+
+catch(error){
+
+console.log(error);
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+async function removeItem(id){
+
+
+try{
+
+
+const response = await fetch(
+
+`http://localhost:5000/api/wishlist/delete/${id}`,
+
+{
+
+method:"DELETE"
+
+}
+
+);
+
+
+
+const data = await response.json();
+
+
+
+alert(data.message || "Removed from Wishlist");
+
+
+
+loadWishlist();
+
+
+
+if(typeof updateWishlistCount==="function"){
+
+updateWishlistCount();
+
+}
+
+
+
+}
+
+catch(error){
+
+console.log(error);
+
+}
+
+
+}
+
+
+
+
+
+
+
+async function addCart(productId){
+
+
+
+if(!productId){
+
+alert("Product ID missing");
+
+return;
+
+}
+
+
+
+try{
+
+
+const response = await fetch(
+
+"http://localhost:5000/api/cart/add",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+user_id:wishlistUser.id,
+
+product_id:productId,
+
+quantity:1
+
+})
+
+
+}
+
+);
+
+
+
+const data = await response.json();
+
+
+
+alert(data.message || "Added to Cart");
+
+
+
+if(typeof updateCartCount==="function"){
+
+updateCartCount();
+
+}
+
+
+
+}
+
+catch(error){
+
+
+console.log(error);
+
+
+alert("Unable to add product to cart");
+
+
+}
+
+
+
+}
+
+
+
+
+loadWishlist();
+
+
+
+</script>
+
+
+</body>
+
+</html>

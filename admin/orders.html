@@ -1,70 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Orders — Brand Name Admin</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../assets/css/style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  </head>
-  <body>
-    <nav class="navbar">
-      <div class="container navbar-inner">
-        <a href="index.html" class="brand">
-          <span class="brand-mark"><i class="fa-solid fa-bolt"></i></span>
-          <span>Brand Name Admin</span>
-        </a>
-        <div class="nav-links">
-          <a href="index.html">Overview</a>
-          <a href="products.html">Products</a>
-          <a href="orders.html" class="active">Orders</a>
-          <a href="customers.html">Customers</a>
-        </div>
-        <div class="nav-actions">
-          <a class="btn btn-outline btn-sm" href="index.html">Dashboard</a>
-          <button class="btn btn-ghost nav-toggle" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
-        </div>
-      </div>
-    </nav>
 
-    <main class="container section">
-      <div class="section-title reveal">
-        <div>
-          <span class="badge"><i class="fa-solid fa-cart-shopping"></i> Order placeholder</span>
-          <h2>All orders</h2>
-        </div>
-      </div>
-      <div class="table-card reveal">
-        <table>
-          <thead>
-            <tr>
-              <th>Order</th>
-              <th>Customer</th>
-              <th>Status</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>#0000</td>
-              <td>Customer Name</td>
-              <td><span class="badge success">Placeholder</span></td>
-              <td>Price Placeholder</td>
-            </tr>
-            <tr>
-              <td>#0001</td>
-              <td>Customer Name</td>
-              <td><span class="badge">Placeholder</span></td>
-              <td>Price Placeholder</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </main>
+<head>
 
-    <script src="../assets/js/main.js"></script>
-  </body>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CartNest | Admin Orders</title>
+
+<link rel="stylesheet" href="../assets/css/style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<div class="container navbar-inner">
+
+<a href="dashboard.html" class="brand">
+
+<i class="fa-solid fa-user-shield"></i>
+
+CartNest Admin
+
+</a>
+
+<div class="nav-links">
+
+<a href="dashboard.html">Dashboard</a>
+
+<a href="products.html">Products</a>
+
+<a href="users.html">Users</a>
+
+<a href="orders.html">Orders</a>
+
+</div>
+
+</div>
+
+</nav>
+
+<section class="container section">
+
+<div class="section-title">
+
+<h2>Manage Orders</h2>
+
+<p>View and update customer orders</p>
+
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+
+<th>Customer</th>
+
+<th>Total</th>
+
+<th>Payment</th>
+
+<th>Payment Status</th>
+
+<th>Status</th>
+
+<th>Date</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="ordersBody">
+
+</tbody>
+
+</table>
+
+</section>
+
+<script>
+
+const ordersBody=document.getElementById("ordersBody");
+
+async function loadOrders(){
+
+try{
+
+const response=await fetch("http://localhost:5000/api/orders");
+
+const data=await response.json();
+
+ordersBody.innerHTML="";
+
+if(!data.success||data.orders.length===0){
+
+ordersBody.innerHTML=`
+<tr>
+<td colspan="8" style="text-align:center;">
+No Orders Found
+</td>
+</tr>`;
+
+return;
+
+}
+
+data.orders.forEach(order=>{
+
+ordersBody.innerHTML+=`
+
+<tr>
+
+<td>#${order.id}</td>
+
+<td>${order.name||order.user_id}</td>
+
+<td>₹${order.total_amount}</td>
+
+<td>${order.payment_method||"COD"}</td>
+
+<td>${order.payment_status||"Pending"}</td>
+
+<td>
+
+<select id="status-${order.id}">
+
+<option value="Pending" ${order.status==="Pending"?"selected":""}>Pending</option>
+
+<option value="Confirmed" ${order.status==="Confirmed"?"selected":""}>Confirmed</option>
+
+<option value="Shipped" ${order.status==="Shipped"?"selected":""}>Shipped</option>
+
+<option value="Delivered" ${order.status==="Delivered"?"selected":""}>Delivered</option>
+
+<option value="Cancelled" ${order.status==="Cancelled"?"selected":""}>Cancelled</option>
+
+</select>
+
+</td>
+
+<td>${new Date(order.created_at).toLocaleDateString()}</td>
+
+<td>
+
+<button
+
+class="btn btn-primary"
+
+onclick="updateStatus(${order.id})">
+
+Save
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+catch(error){
+
+console.log(error);
+
+}
+
+}
+
+async function updateStatus(id){
+
+const status=document.getElementById(`status-${id}`).value;
+
+const response=await fetch(
+
+`http://localhost:5000/api/orders/update/${id}`,
+
+{
+
+method:"PUT",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+status
+
+})
+
+}
+
+);
+
+const data=await response.json();
+
+alert(data.message);
+
+loadOrders();
+
+}
+
+loadOrders();
+
+</script>
+
+</body>
+
 </html>

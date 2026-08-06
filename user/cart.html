@@ -1,68 +1,498 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cart — Brand Name</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../assets/css/style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  </head>
-  <body>
-    <nav class="navbar">
-      <div class="container navbar-inner">
-        <a href="index.html" class="brand">
-          <span class="brand-mark"><i class="fa-solid fa-bolt"></i></span>
-          <span>Brand Name</span>
-        </a>
-        <div class="nav-links">
-          <a href="index.html">Home</a>
-          <a href="products.html">Shop</a>
-          <a href="dashboard.html">Dashboard</a>
-          <a href="orders.html">Orders</a>
-        </div>
-        <div class="nav-actions">
-          <a class="btn btn-outline btn-sm" href="role-selection.html">Login</a>
-          <a class="btn btn-primary btn-sm" href="checkout.html"><i class="fa-solid fa-credit-card"></i> Checkout</a>
-          <button class="btn btn-ghost nav-toggle" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
-        </div>
-      </div>
-    </nav>
 
-    <main class="container cart-grid">
-      <section>
-        <div class="section-title reveal">
-          <h2>Your cart</h2>
-          <span class="badge">0 items</span>
-        </div>
-        <div class="cart-item reveal">
-          <div class="inline-row">
-            <div class="avatar"><i class="fa-solid fa-box"></i></div>
-            <div>
-              <strong>Product Name</strong>
-              <div class="meta">Category Placeholder</div>
-            </div>
-          </div>
-          <div class="qty-controls">
-            <button class="qty-btn">-</button>
-            <span>1</span>
-            <button class="qty-btn">+</button>
-          </div>
-          <strong>Price Placeholder</strong>
-        </div>
-      </section>
-      <aside class="summary-card reveal">
-        <h3>Order summary</h3>
-        <div class="price-line"><span>Subtotal</span><span>Price Placeholder</span></div>
-        <div class="price-line"><span>Shipping</span><span>Placeholder</span></div>
-        <div class="price-line"><span>Tax</span><span>Placeholder</span></div>
-        <div class="total"><span>Total</span><span>Price Placeholder</span></div>
-        <a href="checkout.html" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">Proceed to checkout</a>
-      </aside>
-    </main>
+<head>
 
-    <script src="../assets/js/main.js"></script>
-  </body>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CartNest | Cart</title>
+
+<link rel="stylesheet" href="../assets/css/style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+<div id="navbar"></div>
+
+
+
+<section class="container section">
+
+
+<div class="section-title">
+
+<h2>
+Shopping Cart
+</h2>
+
+<p>
+Your selected products
+</p>
+
+</div>
+
+
+
+<div id="cartItems"></div>
+
+
+
+
+<div class="cart-summary">
+
+
+<h2>
+Order Summary
+</h2>
+
+
+<hr style="margin:15px 0;">
+
+
+
+<p>
+Subtotal :
+<span id="subtotal">
+₹0
+</span>
+</p>
+
+
+
+<p>
+Delivery :
+<span>
+FREE
+</span>
+</p>
+
+
+
+<h2 style="margin-top:20px;">
+
+Total :
+
+<span id="total">
+₹0
+</span>
+
+</h2>
+
+
+
+<br>
+
+
+
+<select id="paymentMethod">
+
+<option value="Cash on Delivery">
+Cash on Delivery
+</option>
+
+
+<option value="UPI">
+UPI
+</option>
+
+
+</select>
+
+
+<br><br>
+
+
+
+<button
+
+class="btn btn-primary"
+
+onclick="checkout()">
+
+Proceed To Checkout
+
+</button>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+<script src="../assets/js/main.js"></script>
+
+<script src="../assets/js/navbar.js"></script>
+
+
+
+<script>
+
+
+const user = JSON.parse(localStorage.getItem("user"));
+
+
+
+if(!user){
+
+location.href="login.html";
+
+}
+
+
+
+const cartItems = document.getElementById("cartItems");
+
+let total = 0;
+
+
+
+
+
+async function loadCart(){
+
+
+try{
+
+
+const response = await fetch(
+
+`http://localhost:5000/api/cart/${user.id}`
+
+);
+
+
+
+const data = await response.json();
+
+
+
+cartItems.innerHTML="";
+
+total=0;
+
+
+
+
+if(!data.cart || data.cart.length===0){
+
+
+cartItems.innerHTML=`
+
+<div style="
+
+text-align:center;
+
+padding:60px;
+
+">
+
+
+<h2>
+Your Cart is Empty 🛒
+</h2>
+
+
+<a href="products.html"
+
+class="btn btn-primary">
+
+Continue Shopping
+
+</a>
+
+
+</div>
+
+`;
+
+
+updateTotal();
+
+return;
+
+
+}
+
+
+
+
+
+data.cart.forEach(item=>{
+
+
+
+const image = item.image
+
+? item.image
+
+: "https://via.placeholder.com/150";
+
+
+
+
+const itemTotal = item.price * item.quantity;
+
+
+total += itemTotal;
+
+
+
+
+cartItems.innerHTML += `
+
+
+
+<div class="cart-item fade">
+
+
+
+<img
+
+src="${image}"
+
+alt="${item.name}"
+
+onerror="this.src='https://via.placeholder.com/150'">
+
+
+
+
+
+<div>
+
+
+<h3>
+${item.name}
+</h3>
+
+
+
+<p>
+${item.description || "Premium quality product."}
+</p>
+
+
+
+<h4>
+₹${item.price}
+</h4>
+
+
+
+</div>
+
+
+
+
+
+<div>
+
+
+<p>
+Qty : ${item.quantity}
+</p>
+
+
+
+<br>
+
+
+
+<button
+
+class="btn btn-danger"
+
+onclick="removeCart(${item.id})">
+
+Remove
+
+</button>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+`;
+
+
+
+});
+
+
+
+updateTotal();
+
+
+
+}
+
+catch(error){
+
+
+console.log(error);
+
+
+}
+
+
+
+}
+
+
+
+
+
+function updateTotal(){
+
+
+document.getElementById("subtotal").innerHTML=
+
+"₹"+total;
+
+
+
+document.getElementById("total").innerHTML=
+
+"₹"+total;
+
+
+}
+
+
+
+
+
+
+async function removeCart(id){
+
+
+await fetch(
+
+`http://localhost:5000/api/cart/delete/${id}`,
+
+{
+
+method:"DELETE"
+
+}
+
+);
+
+
+
+loadCart();
+
+
+
+}
+
+
+
+
+
+
+
+async function checkout(){
+
+
+const payment = document.getElementById("paymentMethod").value;
+
+
+
+const response = await fetch(
+
+"http://localhost:5000/api/orders/place",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+
+body:JSON.stringify({
+
+user_id:user.id,
+
+total_amount:total,
+
+payment_method:payment
+
+})
+
+
+}
+
+);
+
+
+
+
+const data = await response.json();
+
+
+
+if(data.success){
+
+
+alert("Order Placed Successfully");
+
+
+window.location.href="orders.html";
+
+
+}
+
+else{
+
+
+alert(data.message);
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+loadCart();
+
+
+
+</script>
+
+
+</body>
+
 </html>

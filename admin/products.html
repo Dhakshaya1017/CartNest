@@ -1,71 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Product Management — Brand Name</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../assets/css/style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  </head>
-  <body>
-    <nav class="navbar">
-      <div class="container navbar-inner">
-        <a href="index.html" class="brand">
-          <span class="brand-mark"><i class="fa-solid fa-bolt"></i></span>
-          <span>Brand Name Admin</span>
-        </a>
-        <div class="nav-links">
-          <a href="index.html">Overview</a>
-          <a href="products.html" class="active">Products</a>
-          <a href="orders.html">Orders</a>
-          <a href="customers.html">Customers</a>
-        </div>
-        <div class="nav-actions">
-          <a class="btn btn-outline btn-sm" href="add-product.html">Add product</a>
-          <button class="btn btn-ghost nav-toggle" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
-        </div>
-      </div>
-    </nav>
 
-    <main class="container section">
-      <div class="section-title reveal">
-        <div>
-          <span class="badge"><i class="fa-solid fa-box-open"></i> Inventory placeholder</span>
-          <h2>Product management</h2>
-        </div>
-        <a href="add-product.html" class="btn btn-primary">Add product</a>
-      </div>
-      <div class="table-card reveal">
-        <table>
-          <thead>
-            <tr>
-              <th>Product</th>
-              <th>Category</th>
-              <th>Price</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Product Name</td>
-              <td>Category Placeholder</td>
-              <td>Price Placeholder</td>
-              <td><span class="badge success">Placeholder</span></td>
-            </tr>
-            <tr>
-              <td>Product Name</td>
-              <td>Category Placeholder</td>
-              <td>Price Placeholder</td>
-              <td><span class="badge">Placeholder</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </main>
+<head>
 
-    <script src="../assets/js/main.js"></script>
-  </body>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CartNest | Manage Products</title>
+
+<link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<div class="container navbar-inner">
+
+<a href="dashboard.html" class="brand">
+CartNest Admin
+</a>
+
+<div class="nav-links">
+<a href="dashboard.html">Dashboard</a>
+<a href="products.html">Products</a>
+</div>
+
+</div>
+
+</nav>
+
+<section class="container section">
+
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;margin-bottom:25px;">
+
+<div>
+
+<h2>Manage Products</h2>
+
+<p id="productCount"></p>
+
+</div>
+
+<a href="addProduct.html" class="btn btn-primary">
++ Add Product
+</a>
+
+</div>
+
+<input
+type="text"
+id="searchProduct"
+placeholder="Search Product..."
+style="width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;margin-bottom:25px;">
+
+<div id="productGrid" class="product-grid">
+
+</div>
+
+</section>
+
+<script>
+
+const productGrid=document.getElementById("productGrid");
+
+const search=document.getElementById("searchProduct");
+
+let products=[];
+
+async function loadProducts(){
+
+try{
+
+const response=await fetch("http://localhost:5000/api/products");
+
+const data=await response.json();
+
+products=data.products;
+
+document.getElementById("productCount").innerHTML=
+
+`Total Products : ${products.length}`;
+
+renderProducts(products);
+
+}
+
+catch(error){
+
+console.log(error);
+
+}
+
+}
+
+function renderProducts(list){
+
+productGrid.innerHTML="";
+
+if(list.length===0){
+
+productGrid.innerHTML="<h3>No Products Found</h3>";
+
+return;
+
+}
+
+list.forEach(product=>{
+
+const image=product.image
+
+?`../assets/images/${product.image}`
+
+:"https://via.placeholder.com/300x220?text=CartNest";
+
+productGrid.innerHTML+=`
+
+<div class="product-card">
+
+<div class="product-image">
+
+<img src="${image}" alt="${product.name}">
+
+</div>
+
+<h3>${product.name}</h3>
+
+<p>${product.description}</p>
+
+<p><strong>₹${product.price}</strong></p>
+
+<p><b>Category:</b> ${product.category}</p>
+
+<p><b>Stock:</b> ${product.stock}</p>
+
+<div class="card-actions">
+
+<button
+class="btn btn-warning"
+onclick="editProduct(${product.id})">
+
+Edit
+
+</button>
+
+<button
+class="btn btn-danger"
+onclick="deleteProduct(${product.id})">
+
+Delete
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+search.addEventListener("keyup",()=>{
+
+const value=search.value.toLowerCase();
+
+const filtered=products.filter(product=>
+
+product.name.toLowerCase().includes(value) ||
+
+product.category.toLowerCase().includes(value)
+
+);
+
+renderProducts(filtered);
+
+});
+
+function editProduct(id){
+
+window.location.href=`editProduct.html?id=${id}`;
+
+}
+
+async function deleteProduct(id){
+
+const confirmDelete=confirm("Are you sure you want to delete this product?");
+
+if(!confirmDelete){
+
+return;
+
+}
+
+try{
+
+const response=await fetch(
+
+`http://localhost:5000/api/products/delete/${id}`,
+
+{
+
+method:"DELETE"
+
+}
+
+);
+
+const data=await response.json();
+
+alert(data.message);
+
+loadProducts();
+
+}
+
+catch(error){
+
+console.log(error);
+
+alert("Delete Failed");
+
+}
+
+}
+
+loadProducts();
+
+</script>
+
+</body>
+
 </html>

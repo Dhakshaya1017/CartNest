@@ -1,57 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Login — Brand Name</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../assets/css/style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  </head>
-  <body>
-    <nav class="navbar">
-      <div class="container navbar-inner">
-        <a href="../user/index.html" class="brand">
-          <span class="brand-mark"><i class="fa-solid fa-bolt"></i></span>
-          <span>Brand Name Admin</span>
-        </a>
-        <div class="nav-actions">
-          <a class="btn btn-outline btn-sm" href="../user/role-selection.html">Back</a>
-          <button class="btn btn-ghost nav-toggle" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
-        </div>
-      </div>
-    </nav>
 
-    <main class="auth-shell">
-      <div class="auth-card reveal">
-        <span class="badge"><i class="fa-solid fa-lock"></i> Admin access</span>
-        <h1>Admin sign in</h1>
-        <p class="subtitle">Use this page to enter the admin dashboard directly after sign in.</p>
-        <form id="adminLoginForm" class="form-row">
-          <div class="field">
-            <label for="admin-email">Email</label>
-            <input id="admin-email" type="email" placeholder="admin@example.com" />
-          </div>
-          <div class="field">
-            <label for="admin-password">Password</label>
-            <input id="admin-password" type="password" placeholder="Enter your password" />
-          </div>
-          <button class="btn btn-primary" type="submit">Continue</button>
-        </form>
-      </div>
-    </main>
+<head>
 
-    <script src="../assets/js/main.js"></script>
-    <script>
-      const adminLoginForm = document.getElementById('adminLoginForm');
-      if (adminLoginForm) {
-        adminLoginForm.addEventListener('submit', (event) => {
-          event.preventDefault();
-          window.location.href = 'index.html';
-        });
-      }
-    </script>
-  </body>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CartNest | Admin Login</title>
+
+<link rel="stylesheet" href="../assets/css/style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<div class="container navbar-inner">
+
+<a href="../index.html" class="brand">
+
+<i class="fa-solid fa-cart-shopping"></i>
+
+CartNest Admin
+
+</a>
+
+</div>
+
+</nav>
+
+<section class="section">
+
+<div class="form-box">
+
+<h2>Admin Login</h2>
+
+<form id="adminLoginForm">
+
+<div class="form-group">
+
+<label>Email</label>
+
+<input
+type="email"
+id="email"
+required>
+
+</div>
+
+<div class="form-group">
+
+<label>Password</label>
+
+<input
+type="password"
+id="password"
+required>
+
+</div>
+
+<button
+class="btn btn-primary"
+style="width:100%;"
+type="submit">
+
+Login
+
+</button>
+
+</form>
+
+</div>
+
+</section>
+
+<script>
+
+const adminLoginForm=document.getElementById("adminLoginForm");
+
+adminLoginForm.addEventListener("submit",async(e)=>{
+
+e.preventDefault();
+
+const loginData={
+
+email:document.getElementById("email").value,
+
+password:document.getElementById("password").value
+
+};
+try{
+
+const response = await fetch(
+
+"http://localhost:5000/api/admin/login",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify(loginData)
+
+}
+
+);
+
+const data = await response.json();
+
+if(data.success){
+
+localStorage.setItem("adminToken",data.token);
+
+localStorage.setItem("admin",JSON.stringify(data.admin));
+
+alert("Admin Login Successful");
+
+window.location.href="dashboard.html";
+
+}
+
+else{
+
+alert(data.message);
+
+}
+
+}
+
+catch(error){
+
+console.log(error);
+
+alert("Unable To Login");
+
+}
+
+});
+
+</script>
+
+</body>
+
 </html>

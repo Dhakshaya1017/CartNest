@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CartNest | Categories</title>
+
+<link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<div class="container navbar-inner">
+
+<a href="dashboard.html" class="brand">
+
+CartNest Admin
+
+</a>
+
+<div class="nav-links">
+
+<a href="dashboard.html">Dashboard</a>
+
+<a href="products.html">Products</a>
+
+<a href="categories.html">Categories</a>
+
+</div>
+
+</div>
+
+</nav>
+
+<section class="container section">
+
+<h2>Category Management</h2>
+
+<form id="categoryForm" class="form-box">
+
+<input
+type="text"
+id="categoryName"
+placeholder="Category Name"
+required>
+
+<button
+class="btn btn-primary"
+type="submit">
+
+Add Category
+
+</button>
+
+</form>
+
+<br>
+
+<div id="categoryList">
+
+</div>
+
+</section>
+
+<script>
+
+const form=document.getElementById("categoryForm");
+
+const categoryList=document.getElementById("categoryList");
+
+async function loadCategories(){
+
+const response=await fetch(
+
+"http://localhost:5000/api/categories"
+
+);
+
+const data=await response.json();
+
+categoryList.innerHTML="";
+
+data.categories.forEach(category=>{
+
+categoryList.innerHTML+=`
+
+<div class="product-card">
+
+<h3>${category.name}</h3>
+
+<button
+class="btn btn-danger"
+onclick="deleteCategory(${category.id})">
+
+Delete
+
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+form.addEventListener("submit",async(e)=>{
+
+e.preventDefault();
+
+const response=await fetch(
+
+"http://localhost:5000/api/categories/add",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+name:categoryName.value
+
+})
+
+}
+
+);
+
+const data=await response.json();
+
+alert(data.message);
+
+form.reset();
+
+loadCategories();
+
+});
+
+async function deleteCategory(id){
+
+if(!confirm("Delete Category?")) return;
+
+const response=await fetch(
+
+`http://localhost:5000/api/categories/delete/${id}`,
+
+{
+
+method:"DELETE"
+
+}
+
+);
+
+const data=await response.json();
+
+alert(data.message);
+
+loadCategories();
+
+}
+
+loadCategories();
+
+</script>
+
+</body>
+
+</html>

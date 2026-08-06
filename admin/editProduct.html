@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Edit Product | CartNest</title>
+
+<link rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<div class="container navbar-inner">
+
+<a href="dashboard.html" class="brand">
+
+CartNest Admin
+
+</a>
+
+</div>
+
+</nav>
+
+<section class="container section">
+
+<h2>Edit Product</h2>
+
+<form id="editForm" class="form-box">
+
+<input type="text" id="name" placeholder="Product Name" required>
+
+<input type="text" id="description" placeholder="Description" required>
+
+<input type="number" id="price" placeholder="Price" required>
+
+<input type="text" id="category" placeholder="Category" required>
+
+<input type="text" id="image" placeholder="Image">
+
+<input type="number" id="stock" placeholder="Stock" required>
+
+<button class="btn btn-primary" type="submit">
+
+Update Product
+
+</button>
+
+</form>
+
+</section>
+
+<script>
+
+const id=new URLSearchParams(window.location.search).get("id");
+
+async function loadProduct(){
+
+const response=await fetch(
+
+`http://localhost:5000/api/products/${id}`
+
+);
+
+const data=await response.json();
+
+const p=data.product;
+
+document.getElementById("name").value=p.name;
+document.getElementById("description").value=p.description;
+document.getElementById("price").value=p.price;
+document.getElementById("category").value=p.category;
+document.getElementById("image").value=p.image;
+document.getElementById("stock").value=p.stock;
+
+}
+
+loadProduct();
+
+document.getElementById("editForm").addEventListener("submit",async(e)=>{
+
+e.preventDefault();
+
+const product={
+
+name:name.value,
+
+description:description.value,
+
+price:price.value,
+
+category:category.value,
+
+image:image.value,
+
+stock:stock.value
+
+};
+
+const response=await fetch(
+
+`http://localhost:5000/api/products/update/${id}`,
+
+{
+
+method:"PUT",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify(product)
+
+}
+
+);
+
+const data=await response.json();
+
+alert(data.message);
+
+window.location.href="products.html";
+
+});
+
+</script>
+
+</body>
+
+</html>

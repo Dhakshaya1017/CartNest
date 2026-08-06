@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CartNest | Admin Dashboard</title>
+
+<link rel="stylesheet" href="../assets/css/style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<div class="container navbar-inner">
+
+<a href="../index.html" class="brand">
+
+<i class="fa-solid fa-cart-shopping"></i>
+
+CartNest Admin
+
+</a>
+
+<button
+class="btn btn-outline"
+onclick="logoutAdmin()">
+
+Logout
+
+</button>
+
+</div>
+
+</nav>
+
+<section class="container section">
+
+<div class="section-title">
+
+<h2>Admin Dashboard</h2>
+
+<p>Manage your complete CartNest Store</p>
+
+</div>
+
+<div class="dashboard-grid">
+
+<div class="dashboard-card">
+
+<i class="fa-solid fa-box fa-2x"></i>
+
+<h3 id="totalProducts">0</h3>
+
+<p>Total Products</p>
+
+</div>
+
+<div class="dashboard-card">
+
+<i class="fa-solid fa-cart-shopping fa-2x"></i>
+
+<h3 id="totalOrders">0</h3>
+
+<p>Total Orders</p>
+
+</div>
+
+<div class="dashboard-card">
+
+<i class="fa-solid fa-users fa-2x"></i>
+
+<h3 id="totalUsers">0</h3>
+
+<p>Total Users</p>
+
+</div>
+
+</div>
+
+<br><br>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;">
+
+<a href="products.html" class="btn btn-primary">
+
+Manage Products
+
+</a>
+
+<a href="addProduct.html" class="btn btn-success">
+
+Add Product
+
+</a>
+
+<a href="categories.html" class="btn btn-warning">
+
+Manage Categories
+
+</a>
+
+<a href="../user/orders.html" class="btn btn-secondary">
+
+View Orders
+
+</a>
+
+</div>
+
+</section>
+
+<script>
+
+const admin=JSON.parse(localStorage.getItem("admin"));
+
+if(!admin){
+
+window.location.href="login.html";
+
+}
+
+async function loadDashboard(){
+
+try{
+
+const productResponse=await fetch("http://localhost:5000/api/products");
+
+const productData=await productResponse.json();
+
+if(productData.success){
+
+document.getElementById("totalProducts").innerHTML=productData.products.length;
+
+}
+
+const orderResponse=await fetch("http://localhost:5000/api/orders");
+
+const orderData=await orderResponse.json();
+
+if(orderData.success){
+
+document.getElementById("totalOrders").innerHTML=orderData.orders.length;
+
+}
+
+try{
+
+const userResponse=await fetch("http://localhost:5000/api/admin/users");
+
+const userData=await userResponse.json();
+
+if(userData.success){
+
+document.getElementById("totalUsers").innerHTML=userData.users.length;
+
+}
+
+}catch(e){
+
+document.getElementById("totalUsers").innerHTML="--";
+
+}
+
+}
+
+catch(error){
+
+console.log(error);
+
+}
+
+}
+
+function logoutAdmin(){
+
+localStorage.removeItem("admin");
+
+window.location.href="login.html";
+
+}
+
+loadDashboard();
+
+</script>
+
+</body>
+
+</html>
