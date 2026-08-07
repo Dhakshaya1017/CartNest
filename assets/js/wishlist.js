@@ -12,10 +12,8 @@ async function addToWishlist(productId){
 
 
     const check = await fetch(
-
-        `http://localhost:5000/api/wishlist/check/${user.id}/${productId}`
-
-    );
+    `https://cartnest-production.up.railway.app/api/wishlist/check/${user.id}/${productId}`
+);
 
 
     const checkData = await check.json();
@@ -32,11 +30,9 @@ async function addToWishlist(productId){
 
 
 
-    const response = await fetch(
-
-        "http://localhost:5000/api/wishlist/add",
-
-        {
+   const response = await fetch(
+    "https://cartnest-production.up.railway.app/api/wishlist/add",
+    {
 
             method:"POST",
 
@@ -77,10 +73,8 @@ async function removeWishlist(id){
 
 
     const response = await fetch(
-
-        `http://localhost:5000/api/wishlist/delete/${id}`,
-
-        {
+    `https://cartnest-production.up.railway.app/api/wishlist/delete/${id}`,
+    {
 
             method:"DELETE"
 
@@ -122,10 +116,8 @@ async function checkWishlist(productId){
 
 
     const response = await fetch(
-
-        `http://localhost:5000/api/wishlist/check/${user.id}/${productId}`
-
-    );
+    `https://cartnest-production.up.railway.app/api/wishlist/check/${user.id}/${productId}`
+);
 
 
     const data = await response.json();
@@ -147,11 +139,8 @@ async function updateWishlistCount(){
 
 
     const response = await fetch(
-
-        `http://localhost:5000/api/wishlist/count/${user.id}`
-
-    );
-
+    `https://cartnest-production.up.railway.app/api/wishlist/count/${user.id}`
+);
 
 
     const data = await response.json();

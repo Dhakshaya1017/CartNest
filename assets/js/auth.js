@@ -11,10 +11,8 @@ async function registerUser(userData){
 
 
         const response = await fetch(
-
-            "http://localhost:5000/api/users/register",
-
-            {
+    "https://cartnest-production.up.railway.app/api/users/register",
+    {
 
                 method:"POST",
 
@@ -72,10 +70,8 @@ async function loginUser(email,password){
 
 
         const response = await fetch(
-
-            "http://localhost:5000/api/users/login",
-
-            {
+    "https://cartnest-production.up.railway.app/api/users/login",
+    {
 
 
                 method:"POST",

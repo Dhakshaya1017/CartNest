@@ -154,8 +154,8 @@ async function updateCartCount() {
     try {
 
         const response = await fetch(
-            `http://localhost:5000/api/cart/count/${user.id}`
-        );
+    `https://cartnest-production.up.railway.app/api/cart/count/${user.id}`
+);
 
         const data = await response.json();
 
@@ -185,10 +185,9 @@ async function updateWishlistCount() {
 
     try {
 
-        const response = await fetch(
-            `http://localhost:5000/api/wishlist/count/${user.id}`
-        );
-
+       const response = await fetch(
+    `https://cartnest-production.up.railway.app/api/wishlist/count/${user.id}`
+);
         const data = await response.json();
 
         const badge = document.getElementById("wishlistCount");
