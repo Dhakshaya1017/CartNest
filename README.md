@@ -113,8 +113,7 @@ http://localhost:5000
 
 ## 👩‍💻 Developed By
 
-**Anjali Katheriya**
-B.Tech CSE Student
+**Dhakshaya L **
 
 ---
 
